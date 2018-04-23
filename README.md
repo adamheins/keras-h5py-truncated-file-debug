@@ -1,4 +1,4 @@
-# Keras h5py truncated file error debugging
+# Keras h5py Truncated File Debug
 
 This is a simple repository designed to reproduce the error found in [this
 issue](https://github.com/keras-team/keras/issues/6221). I assume you've got
@@ -28,8 +28,9 @@ a bare bones script adapted from the [Keras docs](https://github.com/keras-team/
 
 To fix it, just delete
 `~./keras/models/vgg16_weights_tf_dim_ordering_tf_kernels.h5` and rerun
-`./debug.py`, waiting for the download to complete. The prediction on the cat
-image should now work.
+`./debug.py`, waiting for the download to complete (this can take a little
+while, the data file is sizeable). The prediction on the provided cat image
+should now work.
 
 I included the broken data file with the repo because its a little bit of a
 pain to create one. If you run `./debug.py` and ctrl-c while its downloaded the
