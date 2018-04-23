@@ -13,28 +13,29 @@ IOError: Unable to open file (Truncated file: eof = 21463040, sblock->base_addr 
 When you create a model in Keras, it will check the `~/.keras/models` directory
 to see if the model's data file exists, otherwise it will download it. However,
 if a download was somehow interrupted, the data file may exist under
-`~/.keras/models` but be incomplete. This is what results in the above error.
-The solution is to delete the broken data file and rerun the Python code
-creating the model, ensuring that you wait for the download to complete
+`~/.keras/models` but be incomplete. This is what causes the above error.
+The solution is to delete the truncated data file and rerun the Python code
+to create the model, ensuring that you wait for the download to complete
 successfully.
 
 An intentionally truncated data file,
 `vgg16_weights_tf_dim_ordering_tf_kernels_truncated.h5` is included in this
 repo to simulate an interrupted download. To recreate the error, first run
 `./copy_truncated_model.sh` to copy the truncated model into your
-`~/.keras/models` directory. Then try running `./debug.py`, which tries to load
-the model and run an image through it; you should see the error. `debug.py` is
-a bare bones script adapted from the [Keras docs](https://github.com/keras-team/keras).
+`~/.keras/models` directory. Then run `./debug.py`, which tries to load the
+model and run an image through it; you should see the above error. `debug.py`
+is just a bare bones script adapted from the
+[Keras docs](https://github.com/keras-team/keras).
 
 To fix it, just delete
-`~./keras/models/vgg16_weights_tf_dim_ordering_tf_kernels.h5` and rerun
+`~/.keras/models/vgg16_weights_tf_dim_ordering_tf_kernels.h5` and rerun
 `./debug.py`, waiting for the download to complete (this can take a little
 while, the data file is sizeable). The prediction on the provided cat image
 should now work.
 
-I included the broken data file with the repo because its a little bit of a
-pain to create one. If you run `./debug.py` and ctrl-c while its downloaded the
-model, the program is smart enough to remove the incomplete file from
-`~/.keras/models` so the error does not occur. I created the included truncated
-data file by backgrounding the process and then killing it with the `kill`
-command.
+I included the broken data file with this repo because it's a little bit of a
+pain to create one. If you run `./debug.py` and ctrl-c while the model is
+downloading, the program is smart enough to remove the incomplete file from
+`~/.keras/models` so the error does not occur. Instead, I created the included
+truncated data file by backgrounding the download process and then killing it
+with the `kill` command.
